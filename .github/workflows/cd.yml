@@ -1,0 +1,35 @@
+name: CD
+
+on:
+  push:
+    branches:
+      - main
+jobs:
+  deploy:
+    name: CD
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Cloning repo
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 14
+
+      - name: Install Node.js dependencies
+        run: yarn install
+
+      - name: Run linters
+        uses: wearerequired/lint-action@v1
+        with:
+          eslint: true
+          prettier: true
+
+      - name: Push to production
+        uses: dokku/github-action@master
+        with:
+          git_remote_url: ${{ secrets.SSH_REMOTE_DEPLOY }}
+          ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
