@@ -9,7 +9,10 @@ const AppConfig = {
 	version: pjson.version,
 	selfUrl: process.env.SELF_URL,
 	debug: process.env.DEBUG === 'TRUE',
-	botToken: process.env.BOT_TOKEN
+	botToken: process.env.BOT_TOKEN,
+	ytToken: process.env.YT_TOKEN,
+	botClientId: process.env.BOT_CLIENT_ID,
+	botGuildId: process.env.BOT_GUILD_ID
 };
 
 export { AppConfig };
