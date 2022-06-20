@@ -8,14 +8,12 @@
 
 Apolo is a open source discord bot in constant development, designed for private usage, many of the services integrated for this project could be private or designed for personal use. the bor is fully customizable and support the implementation of new modules to expand they functionality.
 
-
 ## Features
 
 - 👩‍🎤 Play music from urls and query search 🤘🏻
 - 👩🏻‍🎨 Paint AI generated images 🤖
 - 📊 Monitor game server and services status 👆🏻
 - 🤡 Post memes and jokes 😂
-
 
 ## Environment Variables
 
@@ -34,7 +32,6 @@ To run this project, you will need to add the following environment variables to
 `BOT_CLIENT_ID`: Discord client id of the bot
 
 `BOT_GUILD_ID`: Discord guild id in which the bot will be running
-
 
 ## Run Locally
 
@@ -62,13 +59,10 @@ Start the server
   yarn run start
 ```
 
-
 ## Authors
 
 - [@PejeDev](https://github.com/PejeDev)
 
-
 ## License
+
 [GPLv3](https://choosealicense.com/licenses/gpl-3.0/) GNU General Public License v3.0
-
-
