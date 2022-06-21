@@ -1,4 +1,3 @@
-
 # 👩‍🎤Apolo Discord Bot 🤖
 
 [![uptime](https://status.pejedev.xyz/api/badge/1/uptime/24)](https://status.pejedev.xyz/status/me)
