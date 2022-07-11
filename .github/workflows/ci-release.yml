@@ -1,7 +1,9 @@
 name: CI - release
 
 on:
-  - release
+  push:
+    branches:
+      - main
 
 jobs:
   lint:
