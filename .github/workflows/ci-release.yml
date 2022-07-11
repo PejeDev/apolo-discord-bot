@@ -22,10 +22,7 @@ jobs:
         run: yarn install
 
       - name: Run linters
-        uses: wearerequired/lint-action@v1
-        with:
-          eslint: true
-          prettier: true
+        run: yarn lint
 
   deploy:
     runs-on: ubuntu-latest
