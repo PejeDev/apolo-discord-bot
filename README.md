@@ -5,14 +5,14 @@
 [![CI status](https://img.shields.io/github/workflow/status/PejeDev/apolo-discord-bot/CD)](https://github.com/PejeDev/apolo-discord-bot/actions/workflows/ci.yml)
 ![GitHub branch checks state](https://img.shields.io/github/checks-status/PejeDev/apolo-discord-bot/main)
 
-Apolo is a open source discord bot in constant development, designed for private usage, many of the services integrated for this project could be private or designed for personal use. the bor is fully customizable and support the implementation of new modules to expand they functionality.
+Apolo is a open source discord bot in constant development, designed for private usage, many of the services integrated for this project could be private or designed for personal use. the bot is fully customizable and support the implementation of new modules to expand their they functionalities.
 
 ## Features
 
 - 👩‍🎤 Play music from urls and query search 🤘🏻
-- 👩🏻‍🎨 Paint AI generated images 🤖
-- 📊 Monitor game server and services status 👆🏻
-- 🤡 Post memes and jokes 😂
+- 👩🏻‍🎨 Paint AI generated images 🤖 (WIP)
+- 📊 Monitor game server and services status 👆🏻 (WIP)
+- 🤡 Post memes and jokes 😂 (WIP)
 
 ## Environment Variables
 
