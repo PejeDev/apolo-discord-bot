@@ -46,6 +46,7 @@ class ApoloBot {
         const command = this.#commandsCollection.get(interaction.commandName);
 
         if (!command) return;
+
         interaction.deferReply();
         await command.execute(interaction);
       });

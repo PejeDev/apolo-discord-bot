@@ -184,21 +184,13 @@ class MusicModule {
   }
 
   public async showQueue(interaction: CommandInteraction): Promise<void> {
-    try {
-      if (!this.voiceChannel) {
-        interaction.editReply('You need to be in a voice channel to queue!');
-        return;
-      }
-      if (this.queue.length === 0) {
-        interaction.editReply('There is no song in the queue!');
-        return;
-      }
+    if (this.queue.length === 0) {
+      interaction.editReply('There is no song in the queue!');
+    } else {
       const queue = this.queue.map(
         (song, index) => `${index + 1}. ${song.title}`
       );
-      interaction.editReply(`Current queue: ${queue.join('\n')}`);
-    } catch (error) {
-      interaction.editReply(`Failed to queue: ${error}`);
+      interaction.editReply(`Current queue: \n${queue.join('\n')}`);
     }
   }
 
