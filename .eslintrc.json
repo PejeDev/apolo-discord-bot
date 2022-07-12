@@ -25,7 +25,6 @@
     "class-methods-use-this": "off",
     "import/no-cycle": "off",
     "import/no-unresolved": "error",
-    "no-console": ["error", { "allow": ["warn", "error"] }],
     "object-curly-newline": "off",
     "no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],
     "implicit-arrow-linebreak": "off",

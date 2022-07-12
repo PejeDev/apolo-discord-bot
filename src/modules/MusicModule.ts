@@ -16,6 +16,7 @@ import {
 } from 'discord.js';
 import ytdl from 'ytdl-core';
 import { Song } from '@/models/Music';
+import Logger from '@/utils/Logger';
 
 class MusicModule {
   public queue: Song[];
@@ -50,7 +51,7 @@ class MusicModule {
         await this.player.play(source);
         return this.channel.send(`Now playing: ${this.queue[0].title}`);
       } catch (error) {
-        return console.error(error);
+        return Logger.log.error(error);
       }
     });
   }
@@ -66,9 +67,10 @@ class MusicModule {
         await this.initializeInteractionData(interaction);
       }
       if (!this.voiceChannel) {
-        return interaction.reply(
+        interaction.editReply(
           'You need to be in a voice channel to play music!'
         );
+        return;
       }
 
       const permissions = this.voiceChannel.permissionsFor(
@@ -76,9 +78,10 @@ class MusicModule {
       );
 
       if (!permissions.has('CONNECT') || !permissions.has('SPEAK')) {
-        return interaction.reply(
+        interaction.editReply(
           'I need the permissions to join and speak in your voice channel!'
         );
+        return;
       }
 
       const songInfo = await ytdl.getInfo(args);
@@ -91,103 +94,111 @@ class MusicModule {
 
       if (this.queue.length === 0) {
         this.queue.push(song);
-        return this.playSong(interaction, song);
+        this.playSong(interaction, song);
+        return;
       }
       this.queue.push(song);
-      return interaction.reply(`Added ${song.title} to the queue!`);
+      interaction.editReply(`Added ${song.title} to the queue!`);
     } catch (error) {
-      return interaction.reply(`Failed to initialize connection: ${error}`);
+      Logger.log.info(interaction);
+      await interaction.editReply('la baba ye');
     }
   }
 
   public async skip(interaction: CommandInteraction): Promise<void> {
     try {
       if (!this.voiceChannel) {
-        return interaction.reply(
+        interaction.editReply(
           'You need to be in a voice channel to skip the music!'
         );
+        return;
       }
       this.queue.shift();
       if (this.queue.length === 0) {
-        interaction.reply('There is no song in the queue!');
+        interaction.editReply('There is no song in the queue!');
       }
-      return this.playSong(interaction, this.queue[0]);
+      this.playSong(interaction, this.queue[0]);
+      return;
     } catch (error) {
-      return interaction.reply(`Failed to skip: ${error}`);
+      interaction.editReply(`Failed to skip: ${error}`);
     }
   }
 
   public async stop(interaction: CommandInteraction): Promise<void> {
     try {
       if (!this.voiceChannel) {
-        return interaction.reply(
+        interaction.editReply(
           'You need to be in a voice channel to stop the music!'
         );
+        return;
       }
       this.queue = [];
       this.player.stop();
-      return interaction.reply('Stopped the music and cleared the queue!');
+      interaction.editReply('Stopped the music and cleared the queue!');
     } catch (error) {
-      return interaction.reply(`Failed to stop: ${error}`);
+      interaction.editReply(`Failed to stop: ${error}`);
     }
   }
 
   public async resume(interaction: CommandInteraction): Promise<void> {
     try {
       if (!this.voiceChannel) {
-        return interaction.reply(
-          'You need to be in a voice channel to resume!'
-        );
+        interaction.editReply('You need to be in a voice channel to resume!');
+        return;
       }
       this.player.unpause();
-      return interaction.reply('Resumed the music!');
+      interaction.editReply('Resumed the music!');
     } catch (error) {
-      return interaction.reply(`Failed to resume: ${error}`);
+      interaction.editReply(`Failed to resume: ${error}`);
     }
   }
 
   public async pause(interaction: CommandInteraction): Promise<void> {
     try {
       if (!this.voiceChannel) {
-        return interaction.reply('You need to be in a voice channel to pause!');
+        interaction.editReply('You need to be in a voice channel to pause!');
+        return;
       }
       this.player.pause();
-      return interaction.reply('Paused the music!');
+      interaction.editReply('Paused the music!');
     } catch (error) {
-      return interaction.reply(`Failed to pause: ${error}`);
+      interaction.editReply(`Failed to pause: ${error}`);
     }
   }
 
   public async leave(interaction: CommandInteraction): Promise<void> {
     try {
       if (!this.voiceChannel) {
-        return interaction.reply('You need to be in a voice channel to leave!');
+        interaction.editReply('You need to be in a voice channel to leave!');
+        return;
       }
       this.queue = [];
       this.player.stop();
       this.player.removeAllListeners();
       this.connection.destroy();
       this.connection = undefined;
-      return interaction.reply('Left the voice channel!');
+      interaction.editReply('Left the voice channel!');
     } catch (error) {
-      return interaction.reply(`Failed to leave: ${error}`);
+      interaction.editReply(`Failed to leave: ${error}`);
     }
   }
 
   public async showQueue(interaction: CommandInteraction): Promise<void> {
     try {
       if (!this.voiceChannel) {
-        return interaction.reply('You need to be in a voice channel to queue!');
+        interaction.editReply('You need to be in a voice channel to queue!');
+        return;
       }
       if (this.queue.length === 0) {
-        return interaction.reply('There is no song in the queue!');
+        interaction.editReply('There is no song in the queue!');
+        return;
       }
       const queue = this.queue.map(
         (song, index) => `${index + 1}. ${song.title}`
       );
-      return interaction.reply(`Current queue: ${queue.join('\n')}`);
+      interaction.editReply(`Current queue: ${queue.join('\n')}`);
     } catch (error) {
-      return interaction.reply(`Failed to queue: ${error}`);
+      interaction.editReply(`Failed to queue: ${error}`);
     }
   }
 
@@ -203,9 +214,10 @@ class MusicModule {
       const resource = createAudioResource(stream);
       await this.player.play(resource);
 
-      return interaction.reply(`Now playing: ${song.title}`);
+      interaction.editReply(`Now playing: ${song.title}`);
+      return;
     } catch (error) {
-      return interaction.reply(`Failed to play song: ${error}`);
+      interaction.editReply(`Failed to play song: ${error}`);
     }
   }
 

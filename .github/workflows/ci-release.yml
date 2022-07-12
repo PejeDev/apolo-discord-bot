@@ -1,4 +1,4 @@
-name: CI - release
+name: ci - release
 
 on:
   push:
@@ -29,6 +29,10 @@ jobs:
     needs: lint
 
     steps:
+      - name: Cloning repo
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
       - name: Push to production
         uses: dokku/github-action@master
         with:

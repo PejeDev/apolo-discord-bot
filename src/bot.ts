@@ -3,13 +3,14 @@ import { AppConfig } from '@/config/AppConfig';
 import { Commands } from '@/commands';
 import { Command } from '@/models/Command';
 import * as cmi from '@/commands/index';
+import Logger from './utils/Logger';
 
 class ApoloBot {
   #token: string;
 
-  #client: Client;
+  public client: Client;
 
-  #clientId: string;
+  clientId: string;
 
   #commandsCollection: Collection<String, Command>;
 
@@ -20,11 +21,11 @@ class ApoloBot {
     this.#token = AppConfig.botToken;
     const myIntents = new Intents();
     myIntents.add(Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_VOICE_STATES);
-    this.#client = new Client({
+    this.client = new Client({
       intents: myIntents
     });
-    this.#clientId = AppConfig.botClientId;
-    this.#commandsCollection = this.commandsBuild();
+    this.clientId = AppConfig.botClientId;
+    this.#commandsCollection = this.#initCommands();
   }
 
   /**
@@ -32,39 +33,30 @@ class ApoloBot {
    */
   public async listen(): Promise<void> {
     try {
-      this.#client.on('ready', () => {
-        console.warn(`Logged in as ${this.#client.user.tag}!`);
+      this.client.on('ready', () => {
+        Logger.log.info(`Logged in as ${this.client.user.tag}!`);
       });
 
-      const commands = new Commands(this.#clientId);
+      const commands = new Commands(this.clientId);
       await commands.deploy();
 
-      this.#client.on('interactionCreate', async (interaction) => {
+      this.client.on('interactionCreate', async (interaction) => {
         if (!interaction.isCommand()) return;
 
         const command = this.#commandsCollection.get(interaction.commandName);
 
         if (!command) return;
-
-        try {
-          await command.execute(interaction);
-        } catch (error) {
-          console.error(error);
-          interaction.reply({
-            content: 'There was an error while executing this command!',
-            ephemeral: true
-          });
-        }
+        interaction.deferReply();
+        await command.execute(interaction);
       });
 
-      this.#client.login(this.#token);
+      this.client.login(this.#token);
     } catch (error) {
-      console.error(error);
-      throw new Error(error);
+      Logger.log.error(error);
     }
   }
 
-  private commandsBuild(): Collection<String, Command> {
+  #initCommands(): Collection<String, Command> {
     try {
       const cml = Object.entries(cmi);
       const commandsCollection = new Collection<String, Command>();
@@ -73,7 +65,6 @@ class ApoloBot {
       });
       return commandsCollection;
     } catch (error) {
-      console.error(error);
       throw new Error(error);
     }
   }

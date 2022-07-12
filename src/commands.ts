@@ -2,9 +2,10 @@ import { REST } from '@discordjs/rest';
 import { Routes } from 'discord-api-types/v9';
 import { AppConfig } from '@/config/AppConfig';
 import * as cmi from '@/commands/index';
+import Logger from '@/utils/Logger';
 
 class Commands {
-  public commands: JSON[];
+  public commands: any;
 
   public clientId: string;
 
@@ -18,7 +19,7 @@ class Commands {
 
   public async deploy() {
     const rest = new REST({ version: '9' }).setToken(AppConfig.botToken);
-    console.warn('Deploying commands...');
+    Logger.log.info('Deploying commands...');
     await rest.put(
       Routes.applicationGuildCommands(this.clientId, this.guildId),
       {
@@ -28,7 +29,7 @@ class Commands {
   }
 
   #buildCommands(): any {
-    const jsonCommands: JSON[] = [];
+    const jsonCommands: any = [];
     const cml = Object.entries(cmi);
     cml.forEach(([_key, value]) => {
       jsonCommands.push(value.data.toJSON());
