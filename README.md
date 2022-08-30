@@ -1,5 +1,6 @@
 # 👩‍🎤Apolo Discord Bot 🤖
 
+[![Uptime](https://status.pejedev.xyz/api/badge/6/uptime/720?label=30&labelSuffix=d)](https://status.pejedev.xyz)
 [![GPLv3 License](https://img.shields.io/badge/License-GPL%20v3-yellow.svg)](https://opensource.org/licenses/)
 [![CI status](https://img.shields.io/github/workflow/status/PejeDev/apolo-discord-bot/CD)](https://github.com/PejeDev/apolo-discord-bot/actions/workflows/ci.yml)
 ![GitHub branch checks state](https://img.shields.io/github/checks-status/PejeDev/apolo-discord-bot/main)
