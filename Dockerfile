@@ -1,9 +1,11 @@
-FROM node:18-slim
+FROM node:18-alpine
 
 ENV PNPM_HOME="/root/.local/share/pnpm"
 ENV PATH="${PATH}:${PNPM_HOME}"
 
 RUN corepack enable
+
+RUN apk add python3 make g++
 
 WORKDIR /app
 
